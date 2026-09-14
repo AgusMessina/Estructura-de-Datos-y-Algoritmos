@@ -12,7 +12,8 @@ void imprimirFilaCosto(char *nombre, float max, float total, int cant) {
 }
 
 void mostrarLvoPaginado(Lvo *l) {
-    if (isEmptyLVO(*l)) {
+    while (getchar() != '\n'); //Consume un ENTER
+    if(isEmptyLVO(*l)){
         printf("La lista esta vacia.\n");
         return;
     }
@@ -21,7 +22,7 @@ void mostrarLvoPaginado(Lvo *l) {
     int contador = 0;
     int pagina = 1;
 
-    printf("\n=== MOSTRANDO LISTA (PAGINA %d) ===\n", pagina);
+    printf("\n--- (PAGINA %d) ---\n", pagina);
 
     //Recorre mientras no llegue al centinela
     while (!isOosLVO(*l)) {
@@ -38,11 +39,12 @@ void mostrarLvoPaginado(Lvo *l) {
         forwardsLvo(l);
 
         //Muestra 20 Elementos
-        if (contador % 20 == 0 && !isOosLVO(*l)) {
+        if(contador % 20 == 0 && !isOosLVO(*l)){
             printf("\n-- Presione [ENTER] para ver los siguientes 20... --");
             while (getchar() != '\n'); //Consume un ENTER
+            system("cls");
             pagina++;
-            printf("\n=== PAGINA %d ===\n", pagina);
+            printf("\n--- PAGINA %d ---\n", pagina);
         }
     }
 
@@ -51,7 +53,7 @@ void mostrarLvoPaginado(Lvo *l) {
 
 void lvoINICIAR(Lvo *l) {
     FILE *f = fopen("Operaciones_padron.txt", "r");
-    if (f == NULL) {
+    if(f == NULL){
         printf("No existe el archivo...\n");
         return;
     }
@@ -63,22 +65,18 @@ void lvoINICIAR(Lvo *l) {
     char auxDomicilo[81];
     int operacion = 0;
 
-    // Costo individual de operacion
+    //Costo individual de la operacion
     float costoOp = 0.0f;
 
-    // Metricas ALTA (Exito y Fracaso)
-    float costoAltaEAcum = 0.0f, costoAltaEMax = 0.0f;
-    int cantAltaE = 0;
-    float costoAltaFAcum = 0.0f, costoAltaFMax = 0.0f;
-    int cantAltaF = 0;
+    //ALTA
+    float costoAltaAcum = 0.0f, costoAltaMax = 0.0f;
+    int cantAlta = 0;
 
-    // Metricas BAJA (Exito y Fracaso)
-    float costoBajaEAcum = 0.0f, costoBajaEMax = 0.0f;
-    int cantBajaE = 0;
-    float costoBajaFAcum = 0.0f, costoBajaFMax = 0.0f;
-    int cantBajaF = 0;
+    //BAJA
+    float costoBajaAcum = 0.0f, costoBajaMax = 0.0f;
+    int cantBaja = 0;
 
-    // Metricas EVOCACION / LOCALIZAR (Exito y Fracaso)
+    //EVOCACION (Exito y Fracaso)
     float costoLocE = 0.0f, costoLocEMax = 0.0f;
     int cantE = 0;
     float costoLocF = 0.0f, costoLocFMax = 0.0f;
@@ -86,11 +84,11 @@ void lvoINICIAR(Lvo *l) {
 
     Padron pAux;
 
-    while (fscanf(f, " %d", &operacion) == 1) {
+    while(fscanf(f, " %d", &operacion) == 1){
         cantaux++;
-        switch (operacion) {
+        switch(operacion){
 
-            case 1: { // ALTA
+            case 1:{ // ALTA
                 fscanf(f, "%d", &auxInt);
                 setPadronDNI(&pAux, auxInt);
 
@@ -109,24 +107,17 @@ void lvoINICIAR(Lvo *l) {
                 fscanf(f, "%d", &auxInt);
                 setPadronCircuito(&pAux, auxInt);
 
-                if (altaLvo(l, pAux, &costoOp)) {
-                    costoAltaEAcum += costoOp;
-                    cantAltaE++;
-                    if (costoOp > costoAltaEMax) {
-                        costoAltaEMax = costoOp;
-                    }
-                } else {
-                    costoAltaFAcum += costoOp;
-                    cantAltaF++;
-                    if (costoOp > costoAltaFMax) {
-                        costoAltaFMax = costoOp;
-                    }
-                }
+                altaLvo(l, pAux, &costoOp);
+
+                costoAltaAcum += costoOp;
+                cantAlta++;
+                if(costoOp > costoAltaMax)
+                    costoAltaMax = costoOp;
 
                 break;
             }
 
-            case 2: { // BAJA
+            case 2:{ // BAJA
                 fscanf(f, "%d", &auxInt);
                 setPadronDNI(&pAux, auxInt);
 
@@ -145,34 +136,28 @@ void lvoINICIAR(Lvo *l) {
                 fscanf(f, "%d", &auxInt);
                 setPadronCircuito(&pAux, auxInt);
 
-                if (bajaLvo(l, pAux, &costoOp)) {
-                    costoBajaEAcum += costoOp;
-                    cantBajaE++;
-                    if (costoOp > costoBajaEMax) {
-                        costoBajaEMax = costoOp;
-                    }
-                } else {
-                    costoBajaFAcum += costoOp;
-                    cantBajaF++;
-                    if (costoOp > costoBajaFMax)
-                        costoBajaFMax = costoOp;
-                }
+                bajaLvo(l, pAux, &costoOp);
+                costoBajaAcum += costoOp;
+                cantBaja++;
+                if (costoOp > costoBajaMax)
+                    costoBajaMax = costoOp;
+
                 break;
             }
 
-            case 3: { // EVOCACION
+            case 3:{ // EVOCACION
                 fscanf(f, "%d", &auxInt);
 
-                if (evocacionLvo(l, &costoOp, auxInt, &pAux)) {
+                if(evocacionLvo(l, &costoOp, auxInt, &pAux)){
                     costoLocE += costoOp;
                     cantE++;
                     if (costoOp > costoLocEMax) {
                         costoLocEMax = costoOp;
                     }
-                } else {
+                }else{
                     costoLocF += costoOp;
                     cantF++;
-                    if (costoOp > costoLocFMax) {
+                    if(costoOp > costoLocFMax){
                         costoLocFMax = costoOp;
                     }
                 }
@@ -184,15 +169,17 @@ void lvoINICIAR(Lvo *l) {
 
     mostrarLvoPaginado(l);
 
-    printf("\n==================== REPORTE DE COSTOS ====================\n");
-    imprimirFilaCosto("Alta (Exito)",       costoAltaEMax, costoAltaEAcum, cantAltaE);
-    imprimirFilaCosto("Alta (Fracaso)",     costoAltaFMax, costoAltaFAcum, cantAltaF);
-    imprimirFilaCosto("Baja (Exito)",       costoBajaEMax, costoBajaEAcum, cantBajaE);
-    imprimirFilaCosto("Baja (Fracaso)",     costoBajaFMax, costoBajaFAcum, cantBajaF);
+    printf("\n-------------------- REPORTE DE COSTOS --------------------\n");
+    imprimirFilaCosto("Alta",       costoAltaMax, costoAltaAcum, cantAlta);
+    imprimirFilaCosto("Baja",       costoBajaMax, costoBajaAcum, cantBaja);
     imprimirFilaCosto("Evocacion (Exito)",  costoLocEMax,  costoLocE,      cantE);
     imprimirFilaCosto("Evocacion (Fracaso)",costoLocFMax,  costoLocF,      cantF);
-    printf("===========================================================\n");
+    printf("-----------------------------------------------------------\n");
     printf("CANT AUX: %d", cantaux);
+
+    printf("\n-- Presione [ENTER] para continuar --");
+    while (getchar() != '\n'); //Consume un ENTER
+    system("cls");
 }
 
 
@@ -202,5 +189,70 @@ void lvoINICIAR(Lvo *l) {
 int main(){
     Lvo listaTEST;
     initLVO(&listaTEST);
-    lvoINICIAR(&listaTEST);
+
+    int opcion, opcion2;
+
+    do{
+        printf("\n----------- MENU -----------\n");
+        printf("<1> Mostrar estructura\n");
+        printf("<2> Comparar estructuras\n");
+        printf("<3> Salir\n> ");
+        scanf(" %d", &opcion);
+
+        switch(opcion){
+
+            case 1:{                //MOSTRAR ESTRUCTURAS
+                system("cls");
+                do{
+                    printf("\n----------- Seleccione estructura -----------\n");
+                    printf("<1> Lista Vinculada Ordenada con terminacion dada por contenido (LVO)\n");
+                    printf("<2> Lista Secuencial Ordenada con busqueda binaria (LSOBB)\n");
+                    printf("<3> Arbol Binario de Busqueda (ABB)\n");
+                    printf("<4> Volver\n> ");
+                    scanf(" %d", &opcion2);
+
+                    switch(opcion2){
+                        case 1:{                        //LVO
+                            system("cls");
+                            lvoINICIAR(&listaTEST);
+                            break;
+                        }
+                        case 2:{                        //LSB
+                            system("cls");
+
+                            break;
+                        }
+                        case 3:{                        //ABB
+                            system("cls");
+
+                            break;
+                        }
+                        case 4:{                        //VOLVER
+                            system("cls");
+                            break;
+                        }
+                        default:{                       //DEFAULT
+                            system("cls");
+                            printf("\n----------- Error, opcion incorrecta -----------\n");
+                            break;
+                        }
+                    }
+                }while(opcion2 != 4);                   //SALIR DEL "MOSTRAR ESTRUCTURAS"
+
+                break;
+            }                                           //FIN CASE 1
+
+            case 2:{            //COMPARAR ESTRUCTURAS (HACER)
+                system("cls");
+
+                break;
+            }
+
+            case 3:{
+                system("cls");
+
+                printf("\n----------- Saliendo del programa -----------\n");
+            }
+        }
+    }while(opcion != 3);
 }
