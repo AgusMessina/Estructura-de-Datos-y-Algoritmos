@@ -48,7 +48,7 @@ char* getPadronNombreApe(Padron p){
     strcpy(aux, p.nombreApellido);
     return aux;
 }
-char* getPadronNombreDomicilio(Padron p){
+char* getPadronDomicilio(Padron p){
     char *aux = (char*)malloc(strlen(p.domicilio) + 1);
     strcpy(aux, p.domicilio);
     return aux;

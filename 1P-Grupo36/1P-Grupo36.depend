@@ -1,13 +1,13 @@
 # depslib dependency file v1.0
-1789009271 source:c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36\main.c
+1789359784 source:c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<malloc.h>
 	"LVO.h"
 
-1789004518 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36\padron.h
+1789346672 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36\padron.h
 
-1789015029 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36\lvo.h
+1789359985 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36\lvo.h
 	"padron.h"
 
