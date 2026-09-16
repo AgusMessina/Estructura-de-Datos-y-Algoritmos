@@ -53,4 +53,22 @@ char* getPadronDomicilio(Padron p){
     strcpy(aux, p.domicilio);
     return aux;
 }
+
+int padronIguales(Padron a, Padron b) {
+    if (getPadronDNI(a) != getPadronDNI(b))
+        return 0;
+    if (strcasecmp(getPadronNombreApe(a), getPadronNombreApe(b)) != 0)
+        return 0;
+    if (strcasecmp(getPadronDomicilio(a), getPadronDomicilio(b)) != 0)
+        return 0;
+    if (getPadronCodPostal(a) != getPadronCodPostal(b))
+        return 0;
+    if (getPadronMesa(a) != getPadronMesa(b))
+        return 0;
+    if (getPadronCircuito(a) != getPadronCircuito(b))
+        return 0;
+
+    return 1;
+}
+
 #endif // PADRON_H_INCLUDED
