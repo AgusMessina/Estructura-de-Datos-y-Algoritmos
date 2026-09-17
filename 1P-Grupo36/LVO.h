@@ -4,20 +4,20 @@
 #include "padron.h"
 #define infinito 999999999
 
-typedef struct Nodo{
+typedef struct NodoLvo{
     Padron dato;
-    struct Nodo *siguiente;
-}Nodo;
+    struct NodoLvo *siguiente;
+}NodoLvo;
 
 typedef struct{
-    Nodo *acc;
-    Nodo *cur;
-    Nodo *aux;
-    Nodo *fin;
+    NodoLvo *acc;
+    NodoLvo *cur;
+    NodoLvo *aux;
+    NodoLvo *fin;
 }Lvo;
 
 void initLVO(Lvo *lista){
-    lista->fin = (Nodo*)malloc(sizeof(Nodo));
+    lista->fin = (NodoLvo*)malloc(sizeof(NodoLvo));
 
     setPadronDNI(&(lista->fin->dato), infinito);
     lista->fin->siguiente = lista->fin; // Nodo terminacion apunta a si mismo, que es NULL (recursividad rara lol)
@@ -53,23 +53,6 @@ void forwardsLvo(Lvo *lista){
     lista->cur = lista->cur->siguiente;
 }
 
-int padronIguales(Padron a, Padron b) {
-    if (getPadronDNI(a) != getPadronDNI(b))
-        return 0;
-    if (strcasecmp(getPadronNombreApe(a), getPadronNombreApe(b)) != 0)
-        return 0;
-    if (strcasecmp(getPadronDomicilio(a), getPadronDomicilio(b)) != 0)
-        return 0;
-    if (getPadronCodPostal(a) != getPadronCodPostal(b))
-        return 0;
-    if (getPadronMesa(a) != getPadronMesa(b))
-        return 0;
-    if (getPadronCircuito(a) != getPadronCircuito(b))
-        return 0;
-
-    return 1;
-}
-
 int localizarLvo(Lvo *lista, int x, float *costo){
     resetLVO(lista);
     *costo = 0.0f;
@@ -100,7 +83,7 @@ int altaLvo(Lvo *lista, Padron p, float *costo){
         //NO EXISTE EL DNI, SE DA DE ALTA
         if(isFullLvo(*lista)) return 0;
 
-        Nodo *nuevo = (Nodo*)malloc(sizeof(Nodo));
+        NodoLvo *nuevo = (NodoLvo*)malloc(sizeof(NodoLvo));
         if(nuevo == NULL){
             return 0; //NO HAY ESPACIO :(
         }else{  //INGRESAR

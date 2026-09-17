@@ -33,6 +33,7 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="ABB.h" />
 		<Unit filename="LVO.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
