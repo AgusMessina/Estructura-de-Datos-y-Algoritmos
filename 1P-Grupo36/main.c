@@ -53,7 +53,7 @@ void mostrarLvoPaginado(Lvo *l) {
 }
 
 void lvoINICIAR(Lvo *l) {
-    FILE *f = fopen("Operaciones_padron.txt", "r");
+    FILE *f = fopen("Operaciones_padronTEST.txt", "r");
     if(f == NULL){
         printf("No existe el archivo...\n");
         return;
@@ -78,8 +78,11 @@ void lvoINICIAR(Lvo *l) {
     int cantBaja = 0;
 
     //EVOCACION (Exito y Fracaso)
+    //Exito
     float costoLocE = 0.0f, costoLocEMax = 0.0f;
     int cantE = 0;
+
+    //Fracaso
     float costoLocF = 0.0f, costoLocFMax = 0.0f;
     int cantF = 0;
 

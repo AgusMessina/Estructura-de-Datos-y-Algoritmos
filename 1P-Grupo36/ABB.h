@@ -71,10 +71,8 @@ int altaAbb(Abb *arbol, Padron p, float *costo){
     float costoLoc = 0.0f;
 
     if(localizarAbb(arbol, getPadronDNI(p), &costoLoc)){
-        *costo += costoLoc;
         return 0;               //Ya existe
     }else{
-        *costo += costoLoc;
         NodoAbb *aux = nuevoNodoAbb(p);
 
         if(aux == NULL){
@@ -104,7 +102,6 @@ int bajaAbb(Abb *arbol, Padron p, float *costo){
     float costoLoc = 0.0f;
 
     if(!localizarAbb(arbol, getPadronDNI(p), &costoLoc)){
-        *costo += costoLoc;
         return 0;                                       //No se encontro
     }else{
         if(!padronIguales(arbol->pos->dato, p)){

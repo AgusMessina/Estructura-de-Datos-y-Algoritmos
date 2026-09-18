@@ -76,12 +76,10 @@ int altaLvo(Lvo *lista, Padron p, float *costo){
     float costoLoc = 0.0f;
 
     if(localizarLvo(lista, getPadronDNI(p), &costoLoc)){
-        *costo += costoLoc;
         return 0; //EXISTE EL DATO
     }else{
-        *costo += costoLoc;
         //NO EXISTE EL DNI, SE DA DE ALTA
-        if(isFullLvo(*lista)) return 0;
+        //if(isFullLvo(*lista)) return 0;
 
         NodoLvo *nuevo = (NodoLvo*)malloc(sizeof(NodoLvo));
         if(nuevo == NULL){
@@ -109,7 +107,6 @@ int bajaLvo(Lvo *lista, Padron p, float *costo){
     float costoLoc = 0.0f;
 
     if(localizarLvo(lista, getPadronDNI(p), &costoLoc)){
-        *costo += costoLoc;
         if(padronIguales(lista->cur->dato, p)){             //Chequea la tupla
 
             if(lista->acc == lista->cur){       //Borra en caso de que este primero
@@ -130,7 +127,6 @@ int bajaLvo(Lvo *lista, Padron p, float *costo){
             return 0;   //FRACASO ; No es la tupla que queremos borrar
         }
     }else{
-        *costo += costoLoc;
         return 0;       //FRACASO ; No existe el elemento en la lista
     }
 }
