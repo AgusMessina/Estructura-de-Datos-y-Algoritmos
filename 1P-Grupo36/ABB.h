@@ -112,11 +112,68 @@ int bajaAbb(Abb *arbol, Padron p, float *costo){
             if(arbol->pos->der == NULL && arbol->pos->izq == NULL){
 
                 //En caso de que sea la raiz
-                if(arbol->padre == NULL){
+                if(arbol->padre != NULL){
+                    if(arbol->padre->der == arbol->pos)
+                        arbol->padre->der = NULL;
+                    else
+                        arbol->padre->izq = NULL;
 
+                }else{
+                    arbol->raiz = NULL;
                 }
+
+                *costo += 0.5f;
+                free(arbol->pos);
+                return 1;           //Exitoo
             }
+
+            //Caso solo un hijo
+            if(arbol->pos->der == NULL || arbol->pos->izq == NULL){
+                NodoAbb *aux;
+
+                if(arbol->pos->izq != NULL){
+                    aux = arbol->pos->izq;     //Si tiene hijo a la izquierda, me quedo con ese
+                }else{
+                    aux = arbol->pos->der;     //Si no, el hijo que tiene es el derecho
+                }
+
+                if(arbol->padre == NULL){
+                    arbol->raiz = aux;
+                }else{
+                    if(arbol->padre->der == arbol->pos)
+                        arbol->padre->der = aux;
+                    else
+                        arbol->padre->izq = aux;
+                }
+
+                *costo += 0.5f;
+                free(arbol->pos);
+                return 1;           //EXITOOO
+            }
+
+            //Caso dos hijos (Se reemplaza por el menor de los maayores, por copia daatos
+
+            NodoAbb *padreAux = arbol->pos;
+            NodoAbb *menor = arbol->pos->der;          //Un pasito pa delante, pa delante
+
+            while(menor->izq != NULL){                //Un pasito pa atra, pa atra
+                padreAux = menor;
+                menor = menor->izq;
+            }
+
+            arbol->pos->dato = menor->dato;
+            *costo += 1.0f;
+
+            if(padreAux == arbol->pos)
+                padreAux->der = menor->der;
+            else
+                padreAux->izq = menor->der;
+
+            *costo += 0.5f;
+            free(menor);
+            return 1;           //HAY QUE CERRAR EL ESTADIO
         }
+
     }
 
 }
