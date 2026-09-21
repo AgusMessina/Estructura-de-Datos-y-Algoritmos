@@ -71,4 +71,14 @@ int padronIguales(Padron a, Padron b) {
     return 1;
 }
 
+void mostrarPadron(Padron p) {
+    printf("DNI: %d | %s | Domicilo: %s | Codigo Postal: %d | Mesa: %d | Circuito: %d\n",
+           getPadronDNI(p),
+           getPadronNombreApe(p),
+           getPadronDomicilio(p),
+           getPadronCodPostal(p),
+           getPadronMesa(p),
+           getPadronCircuito(p));
+}
+
 #endif // PADRON_H_INCLUDED

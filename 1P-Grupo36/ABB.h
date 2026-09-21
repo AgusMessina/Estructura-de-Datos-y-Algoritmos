@@ -154,14 +154,14 @@ int bajaAbb(Abb *arbol, Padron p, float *costo){
             //Caso dos hijos (Se reemplaza por el menor de los maayores, por copia daatos
 
             NodoAbb *padreAux = arbol->pos;
-            NodoAbb *menor = arbol->pos->der;          //Un pasito pa delante, pa delante
+            NodoAbb *menor = arbol->pos->der;             //Un pasito pa delante, pa delante, pa delante
 
-            while(menor->izq != NULL){                //Un pasito pa atra, pa atra
+            while(menor->izq != NULL){                  //Un pasito pa atra, pa atra, pa atra
                 padreAux = menor;
                 menor = menor->izq;
             }
 
-            arbol->pos->dato = menor->dato;
+            arbol->pos->dato = menor->dato;             //Un movimiento se-xy, un movimiento se-xy
             *costo += 1.0f;
 
             if(padreAux == arbol->pos)
@@ -192,4 +192,44 @@ int evocacionAbb(Abb *arbol, float *costo, int x, Padron *p){
     }
 }
 
+
+//PILA PARA MOSTRAR
+
+/*
+typedef struct NodoPila{
+    NodoAbb *nodoArbol;
+    struct NodoPila *sig;
+}NodoPila;
+
+typedef struct{
+    NodoPila *tope;
+}Pila;
+
+void initPila(Pila *p)
+    p->tope = NULL;
+
+int isEmptyPila(Pila p)
+    return p.tope == NULL;
+
+void push(Pila *p, NodoAbb *n){
+    NodoPila *nuevo = (NodoPila*)malloc(sizeof(NodoPila));
+
+    nuevo->nodoArbol = n;
+    nuevo->sig = p->tope;
+    p->tope = nuevo;
+}
+
+NodoAbb* pop(Pila *p){
+    if (isEmptyPila(*p))
+        return NULL;
+
+    NodoPila *aux = p->tope;
+    NodoAbb *n = aux->nodoArbol;
+    p->tope = aux->sig;
+
+    free(aux);
+    return n;
+}
+
+*/
 #endif // ABB_H_INCLUDED
