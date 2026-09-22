@@ -8,16 +8,104 @@
 #include "ABB.h"
 //#include "LSOBB.h"
 
-void imprimirFilaCosto(char *nombre, float max, float total, int cant) {
-    float media = (cant > 0) ? (total / cant) : 0.0f;
-    printf("%-20s | Max: %6.2f | Media: %6.2f | Total: %7.2f | Cant: %3d\n",
-           nombre, max, media, total, cant);
-}
+
+//--------------- VARIABLES COSTO (SON GLOBALES) ---------------
+
+
+//ARBOL BINARIO
+// ALTA
+float costoAltaAcumABB = 0.0f;
+float costoAltaMaxABB = 0.0f;
+float cantAltaABB = 0.0f;
+float costoAltaMedABB = 0.0f;
+
+// BAJA
+float costoBajaAcumABB = 0.0f;
+float costoBajaMaxABB = 0.0f;
+float cantBajaABB = 0.0f;
+float costoBajaMedABB = 0.0f;
+
+// EVOCACIÓN (Éxito y Fracaso)
+// Éxito
+float costoLocEABB = 0.0f;
+float costoLocEMaxABB = 0.0f;
+float cantEABB = 0.0f;
+float costoLocEMedABB = 0.0f;
+
+// Fracaso
+float costoLocFABB = 0.0f;
+float costoLocFMaxABB = 0.0f;
+float cantFABB = 0.0f;
+float costoLocFMedABB = 0.0f;
+
+// ---------------
+
+
+//LISTA SECUENCIAL ORDENADA
+// ALTA
+float costoAltaAcumLSO = 0.0f;
+float costoAltaMaxLSO = 0.0f;
+float cantAltaLSO = 0.0f;
+float costoAltaMedLSO = 0.0f;
+
+// BAJA
+float costoBajaAcumLSO = 0.0f;
+float costoBajaMaxLSO = 0.0f;
+float cantBajaLSO = 0.0f;
+float costoBajaMedLSO = 0.0f;
+
+// EVOCACIÓN (Éxito y Fracaso)
+// Éxito
+float costoLocELSO = 0.0f;
+float costoLocEMaxLSO = 0.0f;
+float cantELSO = 0.0f;
+float costoLocEMedLSO = 0.0f;
+
+// Fracaso
+float costoLocFLSO = 0.0f;
+float costoLocFMaxLSO = 0.0f;
+float cantFLSO = 0.0f;
+float costoLocFMedLSO = 0.0f;
+
+// ---------------
+
+
+//LISTA VINCULADA ORDENADA
+// ALTA
+float costoAltaAcumLVO = 0.0f;
+float costoAltaMaxLVO = 0.0f;
+float cantAltaLVO = 0.0f;
+float costoAltaMedLVO = 0.0f;
+
+// BAJA
+float costoBajaAcumLVO = 0.0f;
+float costoBajaMaxLVO = 0.0f;
+float cantBajaLVO = 0.0f;
+float costoBajaMedLVO = 0.0f;
+
+// EVOCACIÓN (Éxito y Fracaso)
+// Éxito
+float costoLocELVO = 0.0f;
+float costoLocEMaxLVO = 0.0f;
+float cantELVO = 0.0f;
+float costoLocEMedLVO = 0.0f;
+
+// Fracaso
+float costoLocFLVO = 0.0f;
+float costoLocFMaxLVO = 0.0f;
+float cantFLVO = 0.0f;
+float costoLocFMedLVO = 0.0f;
+
+
+//--------------- FIN VARIABLES GLOBALES ---------------
+
+
 
 //LISTA VINCULADA
 
 void mostrarLvoPaginado(Lvo *l, int *aux) {
-    while (getchar() != '\n'); //Consume un ENTER
+    while(getchar() != '\n'); //Consume un ENTER
+
     if(isEmptyLVO(*l)){
         printf("La lista esta vacia.\n");
         return;
@@ -55,10 +143,10 @@ void mostrarLvoPaginado(Lvo *l, int *aux) {
         }
     }
 
-    printf("\nFin del listado. Total registros mostrados: %d\n", contador);
+    printf("\nFin de la Lista Vinculada Ordenada. Total registros mostrados: %d\n", contador);
 }
 
-void lvoINICIAR(Lvo *l) {
+void lvoINICIAR(Lvo *l, int controlImprimir){
     FILE *f = fopen("Operaciones_padron.txt", "r");
     if(f == NULL){
         printf("No existe el archivo...\n");
@@ -74,23 +162,6 @@ void lvoINICIAR(Lvo *l) {
 
     //Costo individual de la operacion
     float costoOp = 0.0f;
-
-    //ALTA
-    float costoAltaAcum = 0.0f, costoAltaMax = 0.0f;
-    int cantAlta = 0;
-
-    //BAJA
-    float costoBajaAcum = 0.0f, costoBajaMax = 0.0f;
-    int cantBaja = 0;
-
-    //EVOCACION (Exito y Fracaso)
-    //Exito
-    float costoLocE = 0.0f, costoLocEMax = 0.0f;
-    int cantE = 0;
-
-    //Fracaso
-    float costoLocF = 0.0f, costoLocFMax = 0.0f;
-    int cantF = 0;
 
     Padron pAux;
 
@@ -119,11 +190,12 @@ void lvoINICIAR(Lvo *l) {
 
                 altaLvo(l, pAux, &costoOp);
 
-                costoAltaAcum += costoOp;
-                cantAlta++;
-                if(costoOp > costoAltaMax)
-                    costoAltaMax = costoOp;
+                costoAltaAcumLVO += costoOp;
+                cantAltaLVO++;
+                if(costoOp > costoAltaAcumLVO)
+                    costoAltaAcumLVO = costoOp;
 
+                costoAltaMedLVO = costoAltaAcumLVO/cantAltaLVO;
                 break;
             }
 
@@ -147,11 +219,12 @@ void lvoINICIAR(Lvo *l) {
                 setPadronCircuito(&pAux, auxInt);
 
                 bajaLvo(l, pAux, &costoOp);
-                costoBajaAcum += costoOp;
-                cantBaja++;
-                if (costoOp > costoBajaMax)
-                    costoBajaMax = costoOp;
+                costoBajaAcumLVO += costoOp;
+                cantBajaLVO++;
+                if (costoOp > costoBajaAcumLVO)
+                    costoBajaAcumLVO = costoOp;
 
+                costoBajaMedLVO = costoBajaAcumLVO/cantBajaLVO;
                 break;
             }
 
@@ -159,18 +232,23 @@ void lvoINICIAR(Lvo *l) {
                 fscanf(f, "%d", &auxInt);
 
                 if(evocacionLvo(l, &costoOp, auxInt, &pAux)){
-                    costoLocE += costoOp;
-                    cantE++;
-                    if (costoOp > costoLocEMax) {
-                        costoLocEMax = costoOp;
+                    costoLocELVO += costoOp;
+                    cantELVO++;
+                    if (costoOp > costoLocEMaxLVO) {
+                        costoLocEMaxLVO = costoOp;
                     }
+
+                    costoLocEMedLVO = costoLocELVO/cantELVO;
                 }else{
-                    costoLocF += costoOp;
-                    cantF++;
-                    if(costoOp > costoLocFMax){
-                        costoLocFMax = costoOp;
+                    costoLocFLVO += costoOp;
+                    cantFLVO++;
+                    if(costoOp > costoLocFMaxLVO){
+                        costoLocFMaxLVO = costoOp;
                     }
+
+                    costoLocFMedLVO = costoLocFLVO/cantFLVO;
                 }
+
                 break;
             }
         }
@@ -178,25 +256,17 @@ void lvoINICIAR(Lvo *l) {
     fclose(f);
 
     int aux;
-    mostrarLvoPaginado(l, &aux);
+
+    if(controlImprimir == 1){
+            mostrarLvoPaginado(l, &aux);
+    }
+
 
     if(aux == 27){
         system("cls");
         printf("\n----------- Se cancelo la muestra de la LVO -----------\n");
         return;
     }
-
-    printf("\n-------------------- REPORTE DE COSTOS --------------------\n");
-    imprimirFilaCosto("Alta",       costoAltaMax, costoAltaAcum, cantAlta);
-    imprimirFilaCosto("Baja",       costoBajaMax, costoBajaAcum, cantBaja);
-    imprimirFilaCosto("Evocacion (Exito)",  costoLocEMax,  costoLocE,      cantE);
-    imprimirFilaCosto("Evocacion (Fracaso)",costoLocFMax,  costoLocF,      cantF);
-    printf("-----------------------------------------------------------\n");
-    printf("CANT AUX: %d", cantaux);
-
-    printf("\n-- Presione [ENTER] para continuar --");
-    while (getchar() != '\n'); //Consume un ENTER
-    system("cls");
 }
 
 
@@ -256,7 +326,7 @@ void abbPreorden(NodoAbb *nodoActual, int *controlPagina, int *contador, int *pa
 }
 
 void mostrarAbbPaginado(Abb *a) {
-    while (getchar() != '\n'); //Consume un ENTER
+    while(getchar() != '\n'); //Consume un ENTER
     if(isEmptyABB(*a)){
         printf("El arbol esta vacio\n");
         return;
@@ -277,11 +347,11 @@ void mostrarAbbPaginado(Abb *a) {
         return;
     }
 
-    printf("\nFin del listado. Total registros mostrados: %d\n", contador);
+    printf("\nFin del Arbol Binario. Total registros mostrados: %d\n", contador);
 }
 
 
-void abbINICIAR(Abb *a) {
+void abbINICIAR(Abb *a, int controlImprimir) {
     FILE *f = fopen("Operaciones_padronTEST.txt", "r");
     if(f == NULL){
         printf("No existe el archivo...\n");
@@ -289,31 +359,12 @@ void abbINICIAR(Abb *a) {
     }
 
     int cantaux = 0;
+    float costoOp = 0;
 
     int auxInt;
     char auxNombre[51];
     char auxDomicilo[81];
     int operacion = 0;
-
-    //Costo individual de la operacion
-    float costoOp = 0.0f;
-
-    //ALTA
-    float costoAltaAcum = 0.0f, costoAltaMax = 0.0f;
-    int cantAlta = 0;
-
-    //BAJA
-    float costoBajaAcum = 0.0f, costoBajaMax = 0.0f;
-    int cantBaja = 0;
-
-    //EVOCACION (Exito y Fracaso)
-    //Exito
-    float costoLocE = 0.0f, costoLocEMax = 0.0f;
-    int cantE = 0;
-
-    //Fracaso
-    float costoLocF = 0.0f, costoLocFMax = 0.0f;
-    int cantF = 0;
 
     Padron pAux;
 
@@ -342,11 +393,12 @@ void abbINICIAR(Abb *a) {
 
                 altaAbb(a, pAux, &costoOp);
 
-                costoAltaAcum += costoOp;
-                cantAlta++;
-                if(costoOp > costoAltaMax)
-                    costoAltaMax = costoOp;
+                costoAltaAcumABB += costoOp;
+                cantAltaABB++;
+                if(costoOp > costoAltaMaxABB)
+                    costoAltaMaxABB = costoOp;
 
+                costoAltaMedABB = costoAltaAcumABB/cantAltaABB;
                 break;
             }
 
@@ -370,11 +422,12 @@ void abbINICIAR(Abb *a) {
                 setPadronCircuito(&pAux, auxInt);
 
                 bajaAbb(a, pAux, &costoOp);
-                costoBajaAcum += costoOp;
-                cantBaja++;
-                if (costoOp > costoBajaMax)
-                    costoBajaMax = costoOp;
+                costoBajaAcumABB += costoOp;
+                cantBajaABB++;
+                if (costoOp > costoBajaMaxABB)
+                    costoBajaMaxABB = costoOp;
 
+                costoBajaMedABB = costoBajaAcumABB/cantBajaABB;
                 break;
             }
 
@@ -382,17 +435,21 @@ void abbINICIAR(Abb *a) {
                 fscanf(f, "%d", &auxInt);
 
                 if(evocacionAbb(a, &costoOp, auxInt, &pAux)){
-                    costoLocE += costoOp;
-                    cantE++;
-                    if (costoOp > costoLocEMax) {
-                        costoLocEMax = costoOp;
+                    costoLocEABB += costoOp;
+                    cantEABB++;
+                    if (costoOp > costoLocEMaxABB) {
+                        costoLocEMaxABB = costoOp;
                     }
+
+                    costoLocEMedABB = costoLocEABB/cantEABB;
                 }else{
-                    costoLocF += costoOp;
-                    cantF++;
-                    if(costoOp > costoLocFMax){
-                        costoLocFMax = costoOp;
+                    costoLocFABB += costoOp;
+                    cantFABB++;
+                    if(costoOp > costoLocFMaxABB){
+                        costoLocFMaxABB = costoOp;
                     }
+
+                    costoLocFMedABB = costoLocFABB/cantFABB;
                 }
                 break;
             }
@@ -400,15 +457,34 @@ void abbINICIAR(Abb *a) {
     }
     fclose(f);
 
-    mostrarAbbPaginado(a);
+    if(controlImprimir == 1){
+        mostrarAbbPaginado(a);
+    }
+}
 
-    printf("\n-------------------- REPORTE DE COSTOS --------------------\n");
-    imprimirFilaCosto("Alta",       costoAltaMax, costoAltaAcum, cantAlta);
-    imprimirFilaCosto("Baja",       costoBajaMax, costoBajaAcum, cantBaja);
-    imprimirFilaCosto("Evocacion (Exito)",  costoLocEMax,  costoLocE,      cantE);
-    imprimirFilaCosto("Evocacion (Fracaso)",costoLocFMax,  costoLocF,      cantF);
-    printf("-----------------------------------------------------------\n");
-    printf("CANT AUX: %d", cantaux);
+
+
+void compararEstructuras(Lvo *lvo, Abb *abb){       //AGREGAR LSO
+    initABB(abb);
+    initLVO(lvo);
+    //initLSO(lso);
+
+    lvoINICIAR(lvo, 0);
+    abbINICIAR(abb, 0);
+    //lsoINICIAR(lso)
+
+    printf("**********************************************************************************************************************\n");
+    printf("|-----------------------------------||-------------------------||-------------------------||-------------------------|\n");
+    printf("|         |           ALTA          ||          BAJA           ||        EVOCAR EX        ||        EVOCAR FRA       |\n");
+    printf("|         |     Max    |     Med    ||     Max    |     Med    ||     Max    |     Med    ||     Max    |     Med    |\n");
+    printf("|---------|------------|------------||------------|------------||------------|------------||------------|------------|\n");
+    printf("|ABB      |    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    |\n", costoAltaMaxABB, costoAltaMedABB, costoBajaMaxABB, costoBajaMedABB, costoLocEMaxABB, costoLocEMedABB, costoLocFMaxABB, costoLocFMedABB);
+    printf("|--------------------------------------------------------------------------------------------------------------------|\n");
+    printf("|LSO      |    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    |\n", costoAltaMaxLSO, costoAltaMedLSO, costoBajaMaxLSO, costoBajaMedLSO, costoLocEMaxLSO, costoLocEMedLSO, costoLocFMaxLSO, costoLocFMedLSO);
+    printf("|--------------------------------------------------------------------------------------------------------------------|\n");
+    printf("|LVO      |    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    |\n", costoAltaMaxLVO, costoAltaMedLVO, costoBajaMaxLVO, costoBajaMedLVO, costoLocEMaxLVO, costoLocEMedLVO, costoLocFMaxLVO, costoLocFMedLVO);
+    printf("|---------|------------|------------||------------|------------||------------|------------||-------------------------|\n");
+    printf("**********************************************************************************************************************\n");
 
     printf("\n-- Presione [ENTER] para continuar --");
     while (getchar() != '\n'); //Consume un ENTER
@@ -447,7 +523,7 @@ int main(){
                     switch(opcion2){
                         case 1:{                        //LVO
                             system("cls");
-                            lvoINICIAR(&listaTEST);
+                            lvoINICIAR(&listaTEST, 1);
                             break;
                         }
                         case 2:{                        //LSB
@@ -457,7 +533,7 @@ int main(){
                         }
                         case 3:{                        //ABB
                             system("cls");
-                            abbINICIAR(&arbolTEST);
+                            abbINICIAR(&arbolTEST, 1);
                             break;
                         }
                         case 4:{                        //VOLVER
@@ -477,7 +553,7 @@ int main(){
 
             case 2:{            //COMPARAR ESTRUCTURAS (HACER)
                 system("cls");
-
+                compararEstructuras(&listaTEST, &arbolTEST);
                 break;
             }
 
