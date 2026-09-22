@@ -34,11 +34,16 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="ABB.h" />
+		<Unit filename="LSOBB.h" />
 		<Unit filename="LVO.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="padron.h" />
-		<Extensions />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

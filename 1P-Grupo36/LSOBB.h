@@ -21,10 +21,10 @@ void initLSO(listaSO *lso){
 }
 
 int isFullLSO(listaSO lso){
-    return lso.cantidadElem >= MAX;     //si está llena devuelve 1 sino 0
+    return lso.cantidadElem >= MAX;     //si esta llena devuelve 1 sino 0
 }
 
-int isEmptyLSO(listaSO lso){            //si está vacia devuelve 1 sino 0
+int isEmptyLSO(listaSO lso){            //si esta vacia devuelve 1 sino 0
     return lso.cantidadElem == 0;
 }
 
@@ -36,66 +36,96 @@ void forwardsLSO(listaSO *lso){
     lso->cursor++;
 }
 
-void isOosLSO(listaSO lso){
+int isOosLSO(listaSO lso){
     return lso.cursor >= lso.cantidadElem;
 }
 
-int localizarLSO(listaSO *lso, int dni, int *pos, float *costoCelda){
-    resetLSO(lso);
+
+void limpiarMarcasLSO(listaSO *lso){
+    int i;
+    for(i = 0; i < lso->cantidadElem; i++) {
+        lso->vectorM[i] = 0;
+    }
+}
+
+int localizarLSO(listaSO *lso, int dni, float *costoCelda){
     *costoCelda = 0.0f;
 
+    if(isEmptyLSO(*lso)){
+        lso->cursor = 0;
+        return 0;
+    }
+
+    int dniAux;
     int li = 0;
     int ls = lso->cantidadElem - 1;
     int m;
 
-    while(li <= ls){
-        m = (li + ls + 1)/ 2;   //biseccion creo
+    limpiarMarcasLSO(lso);
+
+    while(li < ls){
+        m = (li + ls)/ 2;   //biseccion creo
 
         if(lso->vectorM[m] == 0){      //si no fue consultada suma al costo
             *costoCelda += 1.0f;          //la consulta c/u cuesta 1
             lso->vectorM[m] = 1;
         }
 
-        int dniAux = getPadronDNI(lso->datosLSO[m]);
-        if(dniAux == dni){
-            *pos = m;
-            return 1;       //encontró el dni (exito)
-        }
+        dniAux = getPadronDNI(lso->datosLSO[m]);
 
         if(dniAux < dni)
             li = m + 1;
         else
-            ls = m - 1;
+            ls = m ;
     }
-    *pos = li;
-    return 0;                    //fracaso :(
+
+    if(lso->vectorM[li] == 0){          //(ls == li)
+        *costoCelda += 1.0f;
+        lso->vectorM[li] = 1;
+    }
+
+    //Vamos a chequear si el ultimo que quedo es igual al dni que estoy buscando
+    dniAux = getPadronDNI(lso->datosLSO[li]);       //(ls == li)
+
+    if (dniAux == dni){
+        lso->cursor = li;
+        return 1;       //Exito
+
+    }else{
+
+        //Mantengo el orden de la lista
+        if (dni < dniAux){
+            lso->cursor = li;
+        }else{
+            lso->cursor = li + 1;
+        }
+        return 0;           //fracaso :(
+    }
 }
 
 int altaLSO(listaSO *lso, Padron p, float *costoCelda){
-    int i, pos;
+    int i;
     *costoCelda = 0.0f;
-    float costoLoc = 0.0f;
+    float costoLocLSO = 0.0f;
 
     //CASO FRACASO
+
     if(isFullLSO(*lso))return 0;               //no hay espacio pue
 
-    if(localizarLSO(lso, getPadronDNI(p), &pos, &costoLoc)){
-        *costoCelda += costoLoc;
+    if(localizarLSO(lso, getPadronDNI(p), &costoLocLSO)){
         return 0;                           //ya existe el dni asi que chau
     }else{
         //CASO EXITO
-        for(i = lso->cantidadElem; i > pos; i--){
+        for(i = lso->cantidadElem; i > lso->cursor; i--){
             lso->datosLSO[i] = lso->datosLSO[i-1];
-            lso->vectorM[i] = lso->vectorM[i-1];
+            //lso->vectorM[i] = lso->vectorM[i-1];
             *costoCelda += 1.0f;
         }                           //corrimiento derecha y suma el costo
 
-        lso->datosLSO[pos] = p;     //se inserta el elemento nuevo en la posicion
-        lso->vectorM[pos] = 0;      //se marca como no conmsultadp
+        lso->datosLSO[lso->cursor] = p;     //se inserta el elemento nuevo en la posicion
+        lso->vectorM[lso->cursor] = 0;      //se marca como no conmsultadp
         lso->cantidadElem++;        //y bueno suma xd
-        resetLSO(lso);              //reinicia cursor
 
-        *costoCelda += costoLoc;
         return 1;
     }
 
@@ -103,39 +133,36 @@ int altaLSO(listaSO *lso, Padron p, float *costoCelda){
 
 
 int bajaLSO(listaSO *lso, Padron p, float *costoCelda){
-    int i, pos;
+    int i;
     *costoCelda = 0.0f;
     float costoLocLSO = 0.0f;
 
-    if(localizarLSO(lso, getPadronDNI(p), &pos, &costoLocLSO)){
-        if(padronIguales(lso->datosLSO[pos], p)){
-            for(i = pos; i < (lso->cantidadElem - 1); i++){
+
+    if(localizarLSO(lso, getPadronDNI(p), &costoLocLSO)){
+        if(padronIguales(lso->datosLSO[lso->cursor], p)){
+            for(i = lso->cursor; i < (lso->cantidadElem - 1); i++){
                 lso->datosLSO[i] = lso->datosLSO[i+1];
-                lso->vectorM[i] = lso->vectorM[i+1];
+                //lso->vectorM[i] = lso->vectorM[i+1];
                 *costoCelda += 1.0f;
             }
-            *costoCelda += costoLocLSO;         //corrimiento izq y suma costo
+            //corrimiento izq y suma costo
 
             lso->cantidadElem--;                //actualizo la cantidad de elementos que tengo
-            resetLSO(lso);
             return 1;           //EXITO
         }else
-            *costoCelda += costoLocLSO;
-            return 0;           //FRACASO. no coincide, suma costo igual
+            return 0;           //FRACASO. no coincide
     }else
-        //*costoCelda += costoLocLSO;
-        return 0;               //FRACASO. no encuentra dni, suma igual(?
+        return 0;               //FRACASO. no encuentra dni
 }
 
 int evocacionLSO(listaSO *lso, int dni, Padron *p, float *costoCelda){
-    int pos;
     *costoCelda = 0.0f;
     float costoLocLSO = 0.0f;
 
     //CASO EXTIO (se busca y recupero datos de nupla)
-    if(localizarLSO(lso, dni, &pos, &costoLocLSO)){
+    if(localizarLSO(lso, dni, &costoLocLSO)){
         *costoCelda += costoLocLSO;
-        *p = lso->datosLSO[pos];
+        *p = lso->datosLSO[lso->cursor];
         return 1;
     }else{
         //CASO FRACASO (no existe la nupla)
