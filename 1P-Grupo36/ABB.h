@@ -192,44 +192,4 @@ int evocacionAbb(Abb *arbol, float *costo, int x, Padron *p){
     }
 }
 
-
-//PILA PARA MOSTRAR
-
-/*
-typedef struct NodoPila{
-    NodoAbb *nodoArbol;
-    struct NodoPila *sig;
-}NodoPila;
-
-typedef struct{
-    NodoPila *tope;
-}Pila;
-
-void initPila(Pila *p)
-    p->tope = NULL;
-
-int isEmptyPila(Pila p)
-    return p.tope == NULL;
-
-void push(Pila *p, NodoAbb *n){
-    NodoPila *nuevo = (NodoPila*)malloc(sizeof(NodoPila));
-
-    nuevo->nodoArbol = n;
-    nuevo->sig = p->tope;
-    p->tope = nuevo;
-}
-
-NodoAbb* pop(Pila *p){
-    if (isEmptyPila(*p))
-        return NULL;
-
-    NodoPila *aux = p->tope;
-    NodoAbb *n = aux->nodoArbol;
-    p->tope = aux->sig;
-
-    free(aux);
-    return n;
-}
-
-*/
 #endif // ABB_H_INCLUDED

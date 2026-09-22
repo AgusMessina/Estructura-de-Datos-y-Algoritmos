@@ -192,8 +192,8 @@ void lvoINICIAR(Lvo *l, int controlImprimir){
 
                 costoAltaAcumLVO += costoOp;
                 cantAltaLVO++;
-                if(costoOp > costoAltaAcumLVO)
-                    costoAltaAcumLVO = costoOp;
+                if(costoOp > costoAltaMaxLVO)
+                    costoAltaMaxLVO = costoOp;
 
                 costoAltaMedLVO = costoAltaAcumLVO/cantAltaLVO;
                 break;
@@ -221,8 +221,8 @@ void lvoINICIAR(Lvo *l, int controlImprimir){
                 bajaLvo(l, pAux, &costoOp);
                 costoBajaAcumLVO += costoOp;
                 cantBajaLVO++;
-                if (costoOp > costoBajaAcumLVO)
-                    costoBajaAcumLVO = costoOp;
+                if (costoOp > costoBajaMaxLVO)
+                    costoBajaMaxLVO = costoOp;
 
                 costoBajaMedLVO = costoBajaAcumLVO/cantBajaLVO;
                 break;
@@ -311,8 +311,10 @@ void abbPreorden(NodoAbb *nodoActual, int *controlPagina, int *contador, int *pa
             }while(*aux != 13); //13 = ENTER
 
             system("cls");
-            pagina++;
+            (*pagina)++;
             printf("\n--- PAGINA %d ---\n", *pagina);
+
+            *controlPagina = 0;
         }
 
         //Recorre todo el subarbol izquierdo, cuando termina pasa a la siguiente linea
@@ -352,7 +354,7 @@ void mostrarAbbPaginado(Abb *a) {
 
 
 void abbINICIAR(Abb *a, int controlImprimir) {
-    FILE *f = fopen("Operaciones_padronTEST.txt", "r");
+    FILE *f = fopen("Operaciones_padron.txt", "r");
     if(f == NULL){
         printf("No existe el archivo...\n");
         return;
@@ -462,9 +464,68 @@ void abbINICIAR(Abb *a, int controlImprimir) {
     }
 }
 
+void liberarCostos(){
+    // ABB
+    costoAltaAcumABB = 0.0f; costoAltaMaxABB = 0.0f; cantAltaABB = 0.0f; costoAltaMedABB = 0.0f;
+    costoBajaAcumABB = 0.0f; costoBajaMaxABB = 0.0f; cantBajaABB = 0.0f; costoBajaMedABB = 0.0f;
+    costoLocEABB = 0.0f; costoLocEMaxABB = 0.0f; cantEABB = 0.0f; costoLocEMedABB = 0.0f;
+    costoLocFABB = 0.0f; costoLocFMaxABB = 0.0f; cantFABB = 0.0f; costoLocFMedABB = 0.0f;
+
+    // LVO
+    costoAltaAcumLVO = 0.0f; costoAltaMaxLVO = 0.0f; cantAltaLVO = 0.0f; costoAltaMedLVO = 0.0f;
+    costoBajaAcumLVO = 0.0f; costoBajaMaxLVO = 0.0f; cantBajaLVO = 0.0f; costoBajaMedLVO = 0.0f;
+    costoLocELVO = 0.0f; costoLocEMaxLVO = 0.0f; cantELVO = 0.0f; costoLocEMedLVO = 0.0f;
+    costoLocFLVO = 0.0f; costoLocFMaxLVO = 0.0f; cantFLVO = 0.0f; costoLocFMedLVO = 0.0f;
+
+    // LSO
+    costoAltaAcumLSO = 0.0f; costoAltaMaxLSO = 0.0f; cantAltaLSO = 0.0f; costoAltaMedLSO = 0.0f;
+    costoBajaAcumLSO = 0.0f; costoBajaMaxLSO = 0.0f; cantBajaLSO = 0.0f; costoBajaMedLSO = 0.0f;
+    costoLocELSO = 0.0f; costoLocEMaxLSO = 0.0f; cantELSO = 0.0f; costoLocEMedLSO = 0.0f;
+    costoLocFLSO = 0.0f; costoLocFMaxLSO = 0.0f; cantFLSO = 0.0f; costoLocFMedLSO = 0.0f;
+}
+
+void liberarLvo(Lvo *l){
+    resetLVO(l);
+
+    while (!isOosLVO(*l)){
+        NodoLvo *temp = l->cur;
+        forwardsLvo(l);
+        free(temp);
+    }
+
+    free(l->fin);
+    l->acc = NULL;
+    l->cur = NULL;
+    l->aux = NULL;
+    l->fin = NULL;
+}
+
+void liberarNodosAbb(NodoAbb *nodo){
+    if (nodo != NULL){
+        liberarNodosAbb(nodo->izq);
+        liberarNodosAbb(nodo->der);
+        free(nodo);
+    }
+}
+
+void liberarAbb(Abb *a){
+    liberarNodosAbb(a->raiz);
+    a->raiz = NULL;
+    a->pos = NULL;
+    a->padre = NULL;
+}
+
 
 
 void compararEstructuras(Lvo *lvo, Abb *abb){       //AGREGAR LSO
+    while(getchar() != '\n'); //Consume un ENTER
+
+    liberarAbb(abb);
+    liberarLvo(lvo);
+    //liberarLso(lso);
+
+    liberarCostos();
+
     initABB(abb);
     initLVO(lvo);
     //initLSO(lso);
@@ -473,31 +534,32 @@ void compararEstructuras(Lvo *lvo, Abb *abb){       //AGREGAR LSO
     abbINICIAR(abb, 0);
     //lsoINICIAR(lso)
 
-    printf("**********************************************************************************************************************\n");
-    printf("|-----------------------------------||-------------------------||-------------------------||-------------------------|\n");
-    printf("|         |           ALTA          ||          BAJA           ||        EVOCAR EX        ||        EVOCAR FRA       |\n");
-    printf("|         |     Max    |     Med    ||     Max    |     Med    ||     Max    |     Med    ||     Max    |     Med    |\n");
+printf("**********************************************************************************************************************\n");
+    printf("|---------|-------------------------||-------------------------||-------------------------||-------------------------|\n");
+    printf("|         |          ALTA           ||          BAJA           ||        EVOCAR EX        ||       EVOCAR FRA        |\n");
+    printf("|         |    Max     |    Med     ||    Max     |    Med     ||    Max     |    Med     ||    Max     |    Med     |\n");
     printf("|---------|------------|------------||------------|------------||------------|------------||------------|------------|\n");
-    printf("|ABB      |    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    |\n", costoAltaMaxABB, costoAltaMedABB, costoBajaMaxABB, costoBajaMedABB, costoLocEMaxABB, costoLocEMedABB, costoLocFMaxABB, costoLocFMedABB);
-    printf("|--------------------------------------------------------------------------------------------------------------------|\n");
-    printf("|LSO      |    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    |\n", costoAltaMaxLSO, costoAltaMedLSO, costoBajaMaxLSO, costoBajaMedLSO, costoLocEMaxLSO, costoLocEMedLSO, costoLocFMaxLSO, costoLocFMedLSO);
-    printf("|--------------------------------------------------------------------------------------------------------------------|\n");
-    printf("|LVO      |    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    ||    %.1f    |    %.1f    |\n", costoAltaMaxLVO, costoAltaMedLVO, costoBajaMaxLVO, costoBajaMedLVO, costoLocEMaxLVO, costoLocEMedLVO, costoLocFMaxLVO, costoLocFMedLVO);
-    printf("|---------|------------|------------||------------|------------||------------|------------||-------------------------|\n");
+    printf("| ABB     | %10.1f | %10.1f || %10.1f | %10.1f || %10.1f | %10.1f || %10.1f | %10.1f |\n",
+        costoAltaMaxABB, costoAltaMedABB, costoBajaMaxABB, costoBajaMedABB, costoLocEMaxABB, costoLocEMedABB, costoLocFMaxABB, costoLocFMedABB);
+    printf("|---------|------------|------------||------------|------------||------------|------------||------------|------------|\n");
+    printf("| LSO     | %10.1f | %10.1f || %10.1f | %10.1f || %10.1f | %10.1f || %10.1f | %10.1f |\n",
+           costoAltaMaxLSO, costoAltaMedLSO, costoBajaMaxLSO, costoBajaMedLSO, costoLocEMaxLSO, costoLocEMedLSO, costoLocFMaxLSO, costoLocFMedLSO);
+    printf("|---------|------------|------------||------------|------------||------------|------------||------------|------------|\n");
+    printf("| LVO     | %10.1f | %10.1f || %10.1f | %10.1f || %10.1f | %10.1f || %10.1f | %10.1f |\n",
+           costoAltaMaxLVO, costoAltaMedLVO, costoBajaMaxLVO, costoBajaMedLVO, costoLocEMaxLVO, costoLocEMedLVO, costoLocFMaxLVO, costoLocFMedLVO);
+    printf("|---------|------------|------------||------------|------------||------------|------------||------------|------------|\n");
     printf("**********************************************************************************************************************\n");
-
     printf("\n-- Presione [ENTER] para continuar --");
-    while (getchar() != '\n'); //Consume un ENTER
+    while(getchar() != '\n'); //Consume un ENTER
     system("cls");
 }
 
 
 int main(){
-    Lvo listaTEST;
-    initLVO(&listaTEST);
-
-    Abb arbolTEST;
-    initABB(&arbolTEST);
+    Lvo lista;
+    initLVO(&lista);
+    Abb arbol;
+    initABB(&arbol);
 
     int opcion, opcion2;
 
@@ -523,7 +585,9 @@ int main(){
                     switch(opcion2){
                         case 1:{                        //LVO
                             system("cls");
-                            lvoINICIAR(&listaTEST, 1);
+                            liberarLvo(&lista);
+                            initLVO(&lista);
+                            lvoINICIAR(&lista, 1);
                             break;
                         }
                         case 2:{                        //LSB
@@ -533,7 +597,9 @@ int main(){
                         }
                         case 3:{                        //ABB
                             system("cls");
-                            abbINICIAR(&arbolTEST, 1);
+                            liberarAbb(&arbol);
+                            initABB(&arbol);
+                            abbINICIAR(&arbol, 1);
                             break;
                         }
                         case 4:{                        //VOLVER
@@ -553,7 +619,7 @@ int main(){
 
             case 2:{            //COMPARAR ESTRUCTURAS (HACER)
                 system("cls");
-                compararEstructuras(&listaTEST, &arbolTEST);
+                compararEstructuras(&lista, &arbol);
                 break;
             }
 
