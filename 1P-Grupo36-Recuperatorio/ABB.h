@@ -21,18 +21,22 @@ void initABB(Abb *arbol){
     arbol->pos = NULL;
 }
 
+/*
 int isEmptyABB(Abb arbol){
     return(arbol.raiz == NULL);
 }
+
+int isOosABB(Abb arbol){
+    return arbol.pos == NULL;
+}
+*/
 
 void resetABB(Abb *arbol){
     arbol->pos = arbol->raiz;
     arbol->padre = NULL;
 }
 
-int isOosABB(Abb arbol){
-    return arbol.pos == NULL;
-}
+
 
 NodoAbb *nuevoNodoAbb(Padron p){
     NodoAbb *aux = (NodoAbb*)malloc(sizeof(NodoAbb));
@@ -49,7 +53,7 @@ int localizarAbb(Abb *arbol, int x, float *costo){
     resetABB(arbol);
     *costo = 0.0f;
 
-    while(!isOosABB(*arbol)){                           //Mientras no este vacio el arbol empieza a buscar
+    while(!(arbol->pos == NULL)){                           //Mientras no este vacio el arbol empieza a buscar
         *costo += 1.0f;
 
         if(arbol->pos->dato.dni == x){
@@ -79,7 +83,7 @@ int altaAbb(Abb *arbol, Padron p, float *costo){
             return 0;       //No hay espacio
         }else{
 
-            if(isEmptyABB(*arbol)){                                         //Primer nodo en ser dado de alta
+            if(arbol->raiz == NULL){                                         //Primer nodo en ser dado de alta
                 arbol->raiz = aux;
                 *costo += 0.5f;
                 return 1;

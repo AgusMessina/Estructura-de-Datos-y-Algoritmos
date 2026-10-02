@@ -20,13 +20,16 @@ void initLSO(listaSO *lso){
     }
 }
 
+/*
 int isFullLSO(listaSO lso){
     return lso.cantidadElem >= MAX;     //si esta llena devuelve 1 sino 0
 }
 
+
 int isEmptyLSO(listaSO lso){            //si esta vacia devuelve 1 sino 0
     return lso.cantidadElem == 0;
 }
+
 
 void resetLSO(listaSO *lso){
     lso->cursor = 0;
@@ -39,6 +42,7 @@ void forwardsLSO(listaSO *lso){
 int isOosLSO(listaSO lso){
     return lso.cursor >= lso.cantidadElem;
 }
+*/
 
 
 void limpiarMarcasLSO(listaSO *lso){
@@ -51,7 +55,7 @@ void limpiarMarcasLSO(listaSO *lso){
 int localizarLSO(listaSO *lso, int dni, float *costoCelda){
     *costoCelda = 0.0f;
 
-    if(isEmptyLSO(*lso)){
+    if(lso->cantidadElem == 0){
         lso->cursor = 0;
         return 0;
     }
@@ -110,7 +114,7 @@ int altaLSO(listaSO *lso, Padron p, float *costoCelda){
 
     //CASO FRACASO
 
-    if(isFullLSO(*lso))return 0;               //no hay espacio pue
+    if(lso->cantidadElem >= MAX)return 0;               //no hay espacio pue
 
     if(localizarLSO(lso, p.dni, &costoLocLSO)){
         return 0;                           //ya existe el dni asi que chau

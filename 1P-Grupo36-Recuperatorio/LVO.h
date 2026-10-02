@@ -36,6 +36,7 @@ void resetLVO(Lvo *lista){
     lista->aux = lista->acc;
 }
 
+/*
 int isOosLVO(Lvo lista){
     if(lista.cur == lista.fin)
         return 1;
@@ -43,14 +44,11 @@ int isOosLVO(Lvo lista){
         return 0;
 }
 
+
 int isEmptyLVO(Lvo lista){
     return(lista.acc == lista.fin);
 }
-
-int isFullLvo(Lvo lista){
-    return(lista.acc != lista.cur && lista.cur == NULL);
-}
-
+*/
 void forwardsLvo(Lvo *lista){
     lista->aux = lista->cur;
     lista->cur = lista->cur->siguiente;
