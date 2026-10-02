@@ -67,12 +67,13 @@ int localizarLvo(Lvo *lista, int x, float *costo){
 
     *costo += 1.0f;
 
-    if(lista->cur->dato.dni == x && lista->cur != lista->fin){       //Si cur->dato.dni = x Y si cursor no es igual a fin (Centinela)
+    if(lista->cur->dato.dni == x){       //Si cur->dato.dni = x Y si cursor no es igual a fin (Centinela)
         return 1;
     }else{
         return 0;
     }
 }
+
 
 int altaLvo(Lvo *lista, Padron p, float *costo){
     *costo = 0.0f;

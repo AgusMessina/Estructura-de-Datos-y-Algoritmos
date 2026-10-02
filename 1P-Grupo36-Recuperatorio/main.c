@@ -190,7 +190,7 @@ void mostrarLsoPaginado(listaSO *lso){
             printf("\n--- PAGINA %d ---\n", pagina);
         }
     }
-    printf("\nFin de la Lista Secuencial Ordenada. Total registros mostrados: %d\n", cont-1);
+    printf("\nFin de la Lista Secuencial Ordenada. Total registros mostrados: %d\n", cont);
 }
 
 //ARBOL BINARIO
@@ -305,55 +305,57 @@ void cargaArchivo(Lvo *lvo, Abb *abb, listaSO *lso){
                 fscanf(f, "%d", &auxInt);
                 pAux.dni = auxInt;
 
-                fscanf(f, " %50[^\n]", auxNombre);
-                strcpy(pAux.nombreApellido, auxNombre);
+                if(auxInt < infinito){              //Si el DNI leido es mayor al +inf de la LVO, entonces no se dara de alta y pasara al siguiente DNI
 
-                fscanf(f, " %80[^\n]", auxDomicilo);
-                strcpy(pAux.domicilio, auxDomicilo);
+                    fscanf(f, " %50[^\n]", auxNombre);
+                    strcpy(pAux.nombreApellido, auxNombre);
 
-                fscanf(f, "%d", &auxInt);
-                pAux.codPostal = auxInt;
+                    fscanf(f, " %80[^\n]", auxDomicilo);
+                    strcpy(pAux.domicilio, auxDomicilo);
 
-                fscanf(f, "%d", &auxInt);
-                pAux.mesa = auxInt;
+                    fscanf(f, "%d", &auxInt);
+                    pAux.codPostal = auxInt;
 
-                fscanf(f, "%d", &auxInt);
-                pAux.circuito = auxInt;
+                    fscanf(f, "%d", &auxInt);
+                    pAux.mesa = auxInt;
+
+                    fscanf(f, "%d", &auxInt);
+                    pAux.circuito = auxInt;
 
 
-                if(altaLvo(lvo, pAux, &costoOp)){              //Alta LVO
-                    costoAltaAcumLVO += costoOp;
-                    cantAltaLVO++;
-                    if(costoOp > costoAltaMaxLVO)
-                        costoAltaMaxLVO = costoOp;
+                    if(altaLvo(lvo, pAux, &costoOp)){              //Alta LVO
+                        costoAltaAcumLVO += costoOp;
+                        cantAltaLVO++;
+                        if(costoOp > costoAltaMaxLVO)
+                            costoAltaMaxLVO = costoOp;
 
-                    costoAltaMedLVO = costoAltaAcumLVO/cantAltaLVO;
+                        costoAltaMedLVO = costoAltaAcumLVO/cantAltaLVO;
+                    }
+
+                    costoOp = 0.0f;
+
+                    if(altaAbb(abb, pAux, &costoOp)){             //Alta ABB
+                        costoAltaAcumABB += costoOp;
+                        cantAltaABB++;
+                        if(costoOp > costoAltaMaxABB)
+                            costoAltaMaxABB = costoOp;
+
+                        costoAltaMedABB = costoAltaAcumABB/cantAltaABB;
+                    }
+
+                    costoOp = 0.0f;
+
+                    if(altaLSO(lso, pAux, &costoOp)){            //Alta LSO
+                        costoAltaAcumLSO += costoOp;
+                        cantAltaLSO++;
+                        if(costoOp > costoAltaMaxLSO)
+                            costoAltaMaxLSO = costoOp;
+
+                        costoAltaMedLSO = costoAltaAcumLSO/cantAltaLSO;
+                    }
+
+                    costoOp = 0.0f;
                 }
-
-                costoOp = 0.0f;
-
-                if(altaAbb(abb, pAux, &costoOp)){             //Alta ABB
-                    costoAltaAcumABB += costoOp;
-                    cantAltaABB++;
-                    if(costoOp > costoAltaMaxABB)
-                        costoAltaMaxABB = costoOp;
-
-                    costoAltaMedABB = costoAltaAcumABB/cantAltaABB;
-                }
-
-                costoOp = 0.0f;
-
-                if(altaLSO(lso, pAux, &costoOp)){            //Alta LSO
-                    costoAltaAcumLSO += costoOp;
-                    cantAltaLSO++;
-                    if(costoOp > costoAltaMaxLSO)
-                        costoAltaMaxLSO = costoOp;
-
-                    costoAltaMedLSO = costoAltaAcumLSO/cantAltaLSO;
-                }
-
-                costoOp = 0.0f;
-
                 break;
             }
 
@@ -361,122 +363,134 @@ void cargaArchivo(Lvo *lvo, Abb *abb, listaSO *lso){
                 fscanf(f, "%d", &auxInt);
                 pAux.dni = auxInt;
 
-                fscanf(f, " %50[^\n]", auxNombre);
-                strcpy(pAux.nombreApellido, auxNombre);
+                if(auxInt < infinito){          //Si el DNI leido es mayor al +inf de la LVO, entonces no se dara de baja y pasara al siguiente DNI
 
-                fscanf(f, " %80[^\n]", auxDomicilo);
-                strcpy(pAux.domicilio, auxDomicilo);
+                    fscanf(f, " %50[^\n]", auxNombre);
+                    strcpy(pAux.nombreApellido, auxNombre);
 
-                fscanf(f, "%d", &auxInt);
-                pAux.codPostal = auxInt;
+                    fscanf(f, " %80[^\n]", auxDomicilo);
+                    strcpy(pAux.domicilio, auxDomicilo);
 
-                fscanf(f, "%d", &auxInt);
-                pAux.mesa = auxInt;
+                    fscanf(f, "%d", &auxInt);
+                    pAux.codPostal = auxInt;
 
-                fscanf(f, "%d", &auxInt);
-                pAux.circuito = auxInt;
+                    fscanf(f, "%d", &auxInt);
+                    pAux.mesa = auxInt;
 
-                if(bajaLvo(lvo, pAux, &costoOp)){              //Baja LVO
-                    costoBajaAcumLVO += costoOp;
-                    cantBajaLVO++;
-                    if(costoOp > costoBajaMaxLVO)
-                        costoBajaMaxLVO = costoOp;
+                    fscanf(f, "%d", &auxInt);
+                    pAux.circuito = auxInt;
 
-                    costoBajaMedLVO = costoBajaAcumLVO/cantBajaLVO;
+
+                    if(bajaLvo(lvo, pAux, &costoOp)){              //Baja LVO
+                        costoBajaAcumLVO += costoOp;
+                        cantBajaLVO++;
+                        if(costoOp > costoBajaMaxLVO)
+                            costoBajaMaxLVO = costoOp;
+
+                        costoBajaMedLVO = costoBajaAcumLVO/cantBajaLVO;
+                    }
+
+                    costoOp = 0.0f;
+
+                    if(bajaAbb(abb, pAux, &costoOp)){             //Baja ABB
+                        costoBajaAcumABB += costoOp;
+                        cantBajaABB++;
+                        if(costoOp > costoBajaMaxABB)
+                            costoBajaMaxABB = costoOp;
+
+                        costoBajaMedABB = costoBajaAcumABB/cantBajaABB;
+                    }
+
+                    costoOp = 0.0f;
+
+                    if(bajaLSO(lso, pAux, &costoOp)){            //Baja LSO
+                        costoBajaAcumLSO += costoOp;
+                        cantBajaLSO++;
+                        if(costoOp > costoBajaMaxLSO)
+                            costoBajaMaxLSO = costoOp;
+
+                        costoBajaMedLSO = costoBajaAcumLSO/cantBajaLSO;
+                    }
+
+                    costoOp = 0.0f;
                 }
-
-                costoOp = 0.0f;
-
-                if(bajaAbb(abb, pAux, &costoOp)){             //Baja ABB
-                    costoBajaAcumABB += costoOp;
-                    cantBajaABB++;
-                    if(costoOp > costoBajaMaxABB)
-                        costoBajaMaxABB = costoOp;
-
-                    costoBajaMedABB = costoBajaAcumABB/cantBajaABB;
-                }
-
-                costoOp = 0.0f;
-
-                if(bajaLSO(lso, pAux, &costoOp)){            //Baja LSO
-                    costoBajaAcumLSO += costoOp;
-                    cantBajaLSO++;
-                    if(costoOp > costoBajaMaxLSO)
-                        costoBajaMaxLSO = costoOp;
-
-                    costoBajaMedLSO = costoBajaAcumLSO/cantBajaLSO;
-                }
-
-                costoOp = 0.0f;
-
                 break;
             }
 
             case 3:{ // EVOCACION
                 fscanf(f, "%d", &auxInt);
 
-                //Evocar LVO
-                if(evocacionLvo(lvo, &costoOp, auxInt, &pAux)){       //Exito
-                    costoLocELVO += costoOp;
-                    cantELVO++;
-                    if (costoOp > costoLocEMaxLVO) {
-                        costoLocEMaxLVO = costoOp;
-                    }
-
-                    costoLocEMedLVO = costoLocELVO/cantELVO;
-                }else{                                              //Fracaso
-                    costoLocFLVO += costoOp;
-                    cantFLVO++;
-                    if(costoOp > costoLocFMaxLVO){
-                        costoLocFMaxLVO = costoOp;
-                    }
-
-                    costoLocFMedLVO = costoLocFLVO/cantFLVO;
+                /*
+                if(auxInt >= infinito){
+                    break;
                 }
+                */
 
-                costoOp = 0.0f;
+                if(auxInt < infinito){       //Si el DNI leido es mayor al +inf de la LVO, entonces no se evocara y pasara al siguiente DNI
 
-                //Evocar LSO
-                if(evocacionLSO(lso, auxInt, &pAux, &costoOp)){     //Exito
-                    costoLocELSO += costoOp;
-                    cantELSO++;
-                    if (costoOp > costoLocEMaxLSO) {
-                        costoLocEMaxLSO = costoOp;
+                    //Evocar LVO
+                    if(evocacionLvo(lvo, &costoOp, auxInt, &pAux)){       //Exito
+                        costoLocELVO += costoOp;
+                        cantELVO++;
+                        if (costoOp > costoLocEMaxLVO) {
+                            costoLocEMaxLVO = costoOp;
+                        }
+
+                        costoLocEMedLVO = costoLocELVO/cantELVO;
+                    }else{                                              //Fracaso
+                        costoLocFLVO += costoOp;
+                        cantFLVO++;
+                        if(costoOp > costoLocFMaxLVO){
+                            costoLocFMaxLVO = costoOp;
+                        }
+
+                        costoLocFMedLVO = costoLocFLVO/cantFLVO;
                     }
 
-                    costoLocEMedLSO = costoLocELSO/cantELSO;
-                }else{                                             //Fracaso
-                    costoLocFLSO += costoOp;
-                    cantFLSO++;
-                    if(costoOp > costoLocFMaxLSO){
-                        costoLocFMaxLSO = costoOp;
+                    costoOp = 0.0f;
+
+                    //Evocar LSO
+                    if(evocacionLSO(lso, auxInt, &pAux, &costoOp)){     //Exito
+                        costoLocELSO += costoOp;
+                        cantELSO++;
+                        if (costoOp > costoLocEMaxLSO) {
+                            costoLocEMaxLSO = costoOp;
+                        }
+
+                        costoLocEMedLSO = costoLocELSO/cantELSO;
+                    }else{                                             //Fracaso
+                        costoLocFLSO += costoOp;
+                        cantFLSO++;
+                        if(costoOp > costoLocFMaxLSO){
+                            costoLocFMaxLSO = costoOp;
+                        }
+
+                        costoLocFMedLSO = costoLocFLSO/cantFLSO;
                     }
 
-                    costoLocFMedLSO = costoLocFLSO/cantFLSO;
+                    costoOp = 0.0f;
+
+                    //Evocar ABB
+                    if(evocacionAbb(abb, &costoOp, auxInt, &pAux)){       //Exito
+                        costoLocEABB += costoOp;
+                        cantEABB++;
+                        if (costoOp > costoLocEMaxABB) {
+                            costoLocEMaxABB = costoOp;
+                        }
+
+                        costoLocEMedABB = costoLocEABB/cantEABB;
+                    }else{                                              //Fracaso
+                        costoLocFABB += costoOp;
+                        cantFABB++;
+                        if(costoOp > costoLocFMaxABB){
+                            costoLocFMaxABB = costoOp;
+                        }
+
+                        costoLocFMedABB = costoLocFABB/cantFABB;
+                    }
+
+                    costoOp = 0.0f;
                 }
-
-                costoOp = 0.0f;
-
-                //Evocar ABB
-                if(evocacionAbb(abb, &costoOp, auxInt, &pAux)){       //Exito
-                    costoLocEABB += costoOp;
-                    cantEABB++;
-                    if (costoOp > costoLocEMaxABB) {
-                        costoLocEMaxABB = costoOp;
-                    }
-
-                    costoLocEMedABB = costoLocEABB/cantEABB;
-                }else{                                              //Fracaso
-                    costoLocFABB += costoOp;
-                    cantFABB++;
-                    if(costoOp > costoLocFMaxABB){
-                        costoLocFMaxABB = costoOp;
-                    }
-
-                    costoLocFMedABB = costoLocFABB/cantFABB;
-                }
-
-                costoOp = 0.0f;
                 break;
             }
         }

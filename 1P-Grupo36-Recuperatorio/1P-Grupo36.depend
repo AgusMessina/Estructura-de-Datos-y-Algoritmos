@@ -57,3 +57,24 @@
 1790562114 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36\lsobb.h
 	"padron.h"
 
+1790905223 source:c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36-recuperatorio\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	<malloc.h>
+	"LVO.h"
+	"ABB.h"
+	"LSOBB.h"
+
+1790905276 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36-recuperatorio\lvo.h
+	"padron.h"
+
+1790561832 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36-recuperatorio\padron.h
+
+1790562084 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36-recuperatorio\abb.h
+	"padron.h"
+
+1790562114 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36-recuperatorio\lsobb.h
+	"padron.h"
+
