@@ -288,6 +288,7 @@ void cargaArchivo(Lvo *lvo, Abb *abb, listaSO *lso){
     int cantaux = 0;
 
     int auxInt;
+    long long auxComp;
     char auxNombre[51];
     char auxDomicilo[81];
     int operacion = 0;
@@ -297,15 +298,16 @@ void cargaArchivo(Lvo *lvo, Abb *abb, listaSO *lso){
 
     Padron pAux;
 
-    while(fscanf(f, " %d", &operacion) == 1){
+    while(fscanf(f, "%d", &operacion) == 1){
         cantaux++;
         switch(operacion){
 
             case 1:{ // ALTA
-                fscanf(f, "%d", &auxInt);
-                pAux.dni = auxInt;
+                fscanf(f, "%lld", &auxComp);
 
-                if(auxInt < infinito){              //Si el DNI leido es mayor al +inf de la LVO, entonces no se dara de alta y pasara al siguiente DNI
+                if(auxComp < infinito){              //Si el DNI leido es mayor al +inf de la LVO, entonces no se dara de alta y pasara al siguiente DNI
+                    auxInt = (int)auxComp;
+                    pAux.dni = auxInt;
 
                     fscanf(f, " %50[^\n]", auxNombre);
                     strcpy(pAux.nombreApellido, auxNombre);
@@ -355,15 +357,25 @@ void cargaArchivo(Lvo *lvo, Abb *abb, listaSO *lso){
                     }
 
                     costoOp = 0.0f;
+                }else{
+                    fscanf(f, " %50[^\n]", auxNombre);
+
+                    fscanf(f, " %80[^\n]", auxDomicilo);
+
+                    fscanf(f, "%d", &auxInt);
+
+                    fscanf(f, "%d", &auxInt);
+
+                    fscanf(f, "%d", &auxInt);
                 }
                 break;
             }
 
             case 2:{ // BAJA
-                fscanf(f, "%d", &auxInt);
-                pAux.dni = auxInt;
+                fscanf(f, "%lld", &auxComp);
 
-                if(auxInt < infinito){          //Si el DNI leido es mayor al +inf de la LVO, entonces no se dara de baja y pasara al siguiente DNI
+                if(auxComp < infinito){              //Si el DNI leido es mayor al +inf de la LVO, entonces no se dara de alta y pasara al siguiente DNI
+                    auxInt = auxComp;
 
                     fscanf(f, " %50[^\n]", auxNombre);
                     strcpy(pAux.nombreApellido, auxNombre);
@@ -413,21 +425,34 @@ void cargaArchivo(Lvo *lvo, Abb *abb, listaSO *lso){
                     }
 
                     costoOp = 0.0f;
+                }else{
+                    fscanf(f, " %50[^\n]", auxNombre);
+
+                    fscanf(f, " %80[^\n]", auxDomicilo);
+
+                    fscanf(f, "%d", &auxInt);
+
+                    fscanf(f, "%d", &auxInt);
+
+                    fscanf(f, "%d", &auxInt);
+
                 }
                 break;
             }
 
             case 3:{ // EVOCACION
-                fscanf(f, "%d", &auxInt);
+
 
                 /*
                 if(auxInt >= infinito){
                     break;
                 }
                 */
+                fscanf(f, "%lld", &auxComp);
 
-                if(auxInt < infinito){       //Si el DNI leido es mayor al +inf de la LVO, entonces no se evocara y pasara al siguiente DNI
+                if(auxComp < infinito){       //Si el DNI leido es mayor al +inf de la LVO, entonces no se evocara y pasara al siguiente DNI
 
+                    auxInt = auxComp;
                     //Evocar LVO
                     if(evocacionLvo(lvo, &costoOp, auxInt, &pAux)){       //Exito
                         costoLocELVO += costoOp;
@@ -496,14 +521,6 @@ void cargaArchivo(Lvo *lvo, Abb *abb, listaSO *lso){
         }
     }
     fclose(f);
-
-    int aux = 0;
-
-    if(aux == 27){
-        system("cls");
-        printf("\n----------- Se cancelo la muestra de la LVO -----------\n");
-        return;
-    }
 }
 
 void liberarCostos(){
@@ -581,6 +598,7 @@ void compararEstructuras(Lvo *lvo, Abb *abb, listaSO *lso){       //AGREGAR LSO
 
     cargaArchivo(lvo, abb, lso);
 
+    printf("\n");
     printf("+-----+-----------------------------+-----------------------------+-----------------------------+-----------------------------+\n");
     printf("|     |            ALTA             |            BAJA             |        EVOCAR EXITO         |       EVOCAR FRACASO        |\n");
     printf("+-----+------+--------+------+------+------+--------+------+------+------+--------+------+------+------+--------+------+------+\n");
@@ -686,7 +704,7 @@ int main(){
             }break;                                           //FIN CASE 1
 
             case 2:{            //COMPARAR ESTRUCTURAS (HACER)
-                system("cls");
+                //system("cls");
                 compararEstructuras(&lvo, &abb, &lso);
                 control = 1;
                 break;
