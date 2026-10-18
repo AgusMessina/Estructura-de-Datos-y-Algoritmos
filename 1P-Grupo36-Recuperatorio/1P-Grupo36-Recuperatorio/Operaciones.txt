@@ -1,0 +1,326 @@
+3
+10000100
+1
+10000200
+Facundo Martez
+Calle Sosa 4740
+5770
+1
+1000
+1
+10000150
+Camila Pablo Gomez
+Calle Benitez 3405
+5710
+1
+1000
+1
+10000130
+Gonzalo Valentin Perez
+Calle Ruiz 9310
+5700
+1
+1000
+1
+10000110
+Facundo Mateo Ramirez
+Calle Alvarez 1907
+5750
+1
+1000
+1
+10000180
+Gonzalo Mateo Medina
+Calle Flores 6135
+5770
+1
+1000
+1
+10000160
+Pablo Pablo Rodriguez
+Calle Silva 8883
+5772
+1
+1000
+1
+10000170
+Diego Maria Fernandez
+Calle Benitez 861
+5750
+1
+1000
+1
+10000200
+ROBERTO MARTEZ
+Calle Sosa 4740
+5770
+1
+1000
+1
+10000110
+Facundo Mateo Ramirez
+Calle Alvarez 1907
+5750
+1
+1000
+1
+10000150
+CAMILA Gomez
+Calle Benitez 3405
+5710
+1
+1000
+1
+10000210
+Lucia Santiago Romero
+Calle Prez 4692
+5750
+1
+1000
+1
+10000230
+Matias Juan Acosta
+Calle Romero 2887
+5770
+1
+1000
+1
+10000220
+Lucia Valeria Silva
+Calle Acosta 7432
+5750
+1
+1000
+1
+10000270
+Lucia Santiago Sosa
+Calle Prez 8103
+5700
+2
+1000
+1
+10000290
+Tomas Santiago Garcia
+Calle Gamez 5296
+5750
+2
+1000
+1
+10000250
+Joaquin Florencia Suarez
+Calle Prez 4495
+5772
+2
+1000
+1
+10000260
+Joaquina Maria Parez
+Calle Torres 6827
+5881
+2
+1000
+3
+10000230
+3
+10000200
+3
+10000110
+3
+10000170
+3
+10000160
+3
+10000290
+2
+10000200
+FAcundo Martez
+Calle Sosa 4740
+5770
+1
+1000
+3
+10000200
+3
+10000220
+3
+10000180
+2
+10000230
+Matias Juan Acosta
+Calle Romero 2887
+5770
+1
+1000
+2
+10000130
+Gonzalo Valentin Perez
+Calle Ruiz 9310
+5700
+1
+1000
+2
+10000180
+Gonzalo Mateo Medina
+Calle Flores 6135
+5770
+1
+1000
+3
+10000110
+2
+10000110
+Facundo Mateo Ramirez
+Calle Alvarez 1907
+5750
+1
+1000
+3
+10000110
+2
+10000160
+Pablo Pablo Rodriguez
+Calle Silva 8883
+5772
+1
+1000
+2
+10000210
+Lucia Santiago Romero
+Calle Prez 4692
+5750
+1
+1000
+3
+10000210
+3
+10000220
+2
+10000150
+Camila Pablo Gomez
+Calle Benitez 3405
+5710
+1
+1000
+2
+10000170
+Diego Maria Fernandez
+Calle Benitez 861
+5750
+1
+1000
+2
+10000220
+Lucia Valeria Silva
+Calle Acosta 7432
+5750
+1
+1000
+3
+10000290
+2
+10000290
+Tomas Santiago Garcia
+Calle Gamez 5296
+5750
+2
+1000
+2
+10000270
+Lucia Santiago Sosa
+Calle Prez 8103
+5700
+2
+1000
+2
+10000250
+Joaquin Florencia Suarez
+Calle Prez 4495
+5772
+2
+1000
+2
+10000260
+Joaquina Maria Parez
+Calle Torres 6827
+5881
+2
+1000
+3
+10000260
+1
+10000150
+Camila Pablo Gomez
+Calle Benitez 3405
+5710
+1
+1000
+1
+10000100
+Lucas Maria Alvarez
+Calle Silva 523
+5700
+1
+1000
+1
+10000120
+Sofia Herrera
+Calle Flores 9749
+5750
+1
+1000
+1
+10000140
+Juan Elena Rios
+Calle Ramirez 1866
+5881
+1
+1000
+1
+10000240
+Maria Juan Acosta
+Calle Silva 517
+5770
+1
+1000
+1
+10000190
+Facundo Camila Rios
+Calle Ruiz 6474
+5700
+1
+1000
+1
+10000280
+Sofia Lucia Acosta
+Calle Garcia 2319
+5772
+2
+1000
+2
+10000290
+Sofia Lucia Acosta
+Calle Garcia 2319
+5772
+2
+1000
+2
+10000150
+Camila Pablo Gomes
+Calle Benitez 3405
+5710
+1
+1000
+3
+10000290
+3
+10000100
+3
+10000090
+3
+10000150
+3
+10000155
+3
+10000280
+3
+999999999
