@@ -112,7 +112,7 @@ float costoLocFMedLVO = 0.0f;
 void mostrarLvoPaginado(Lvo *l) {
     while(getchar() != '\n'); //Consume un ENTER
 
-    if(isEmptyLVO(*l)){
+    if(l->acc == l->fin){
         printf("La lista esta vacia.\n");
         return;
     }
@@ -124,7 +124,7 @@ void mostrarLvoPaginado(Lvo *l) {
     printf("\n--- PAGINA %d ---\n", pagina);
 
     //Recorre mientras no llegue al centinela
-    while (!isOosLVO(*l)) {
+    while (!(l->cur == l->fin)) {
         Padron p = l->cur->dato;
 
         //Imprime
@@ -133,7 +133,7 @@ void mostrarLvoPaginado(Lvo *l) {
         forwardsLvo(l);
 
         //Muestra 20 Elementos
-        if(contador % 20 == 0 && !isOosLVO(*l)){
+        if(contador % 20 == 0 && !(l->cur == l->fin)){
             printf("\nPresione [ESC] para volver al menu -- Presione [ENTER] para ver los siguientes 20... -- ");
 
             do{
@@ -157,25 +157,25 @@ void mostrarLvoPaginado(Lvo *l) {
 void mostrarLsoPaginado(listaSO *lso){
     while(getchar() != '\n');  //consume un ENTER
 
-    if(isEmptyLSO(*lso)){
+    if(lso->cantidadElem == 0){
         printf("La lista esta vacia\n");
         return;
     }
 
-    resetLSO(lso);
+    lso->cursor = 0;
 
     int cont = 0, pagina = 1;
     int aux = 0;
     printf("\n--- PAGINA %d ---\n", pagina);
 
-    while(!isOosLSO(*lso)){
+    while(!(lso->cursor >= lso->cantidadElem)){
         Padron p = lso->datosLSO[lso->cursor];
 
         printf("[%d] ", cont); mostrarPadron(p); printf("\n");
         cont++;
-        forwardsLSO(lso);
+        lso->cursor++;
 
-        if(cont % 20 == 0 && !isOosLSO(*lso)){
+        if(cont % 20 == 0 && !(lso->cursor >= lso->cantidadElem)){
             printf("\nPresione [ESC] para volver al menu -- Presione [ENTER] para ver los siguientes 20... -- ");
 
             do{
@@ -252,7 +252,7 @@ void abbPreorden(NodoAbb *nodoActual, int *controlPagina, int *contador, int *pa
 
 void mostrarAbbPaginado(Abb *a) {
     while(getchar() != '\n'); //Consume un ENTER
-    if(isEmptyABB(*a)){
+    if(a->raiz == NULL){
         printf("El arbol esta vacio\n");
         return;
     }
@@ -279,7 +279,7 @@ void mostrarAbbPaginado(Abb *a) {
 
 //PROCESO DE ARCHIVOS
 void cargaArchivo(Lvo *lvo, Abb *abb, listaSO *lso){
-    FILE *f = fopen("Operaciones.txt", "r");
+    FILE *f = fopen("Operaciones_PadronTEST.txt", "r");
     if(f == NULL){
         printf("No existe el archivo...\n");
         return;
@@ -529,7 +529,7 @@ void liberarCostos(){
 void liberarLvo(Lvo *l){
     resetLVO(l);
 
-    while (!isOosLVO(*l)){
+    while (!(l->cur == l->fin)){
         NodoLvo *temp = l->cur;
         forwardsLvo(l);
         free(temp);
@@ -624,6 +624,7 @@ int main(){
     initABB(&abb);
     listaSO lso;
     initLSO(&lso);
+
 
     int opcion, opcion2;
     int control = 0;

@@ -111,6 +111,9 @@ int bajaLvo(Lvo *lista, Padron p, float *costo){
     *costo = 0.0f;
     float costoLoc = 0.0f;
 
+    if(p.dni >= infinito)     //Es mayor o igual a +Inf
+        return 0;
+
     if(localizarLvo(lista, p.dni, &costoLoc)){
         if(padronIguales(lista->cur->dato, p)){             //Chequea la tupla
 

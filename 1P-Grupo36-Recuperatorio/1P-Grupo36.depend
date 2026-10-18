@@ -78,3 +78,24 @@
 1790562114 c:\users\agusg\documents\universida\uni\a—o 2\eda\1p-grupo36-recuperatorio\lsobb.h
 	"padron.h"
 
+1792340918 source:c:\users\belu\downloads\estructura-de-datos-y-algoritmos-main(1)\estructura-de-datos-y-algoritmos-main\1p-grupo36-recuperatorio\main.c
+	<stdio.h>
+	<stdlib.h>
+	<conio.h>
+	<string.h>
+	<malloc.h>
+	"LVO.h"
+	"ABB.h"
+	"LSOBB.h"
+
+1792340977 c:\users\belu\downloads\estructura-de-datos-y-algoritmos-main(1)\estructura-de-datos-y-algoritmos-main\1p-grupo36-recuperatorio\lvo.h
+	"padron.h"
+
+1790949169 c:\users\belu\downloads\estructura-de-datos-y-algoritmos-main(1)\estructura-de-datos-y-algoritmos-main\1p-grupo36-recuperatorio\padron.h
+
+1790951252 c:\users\belu\downloads\estructura-de-datos-y-algoritmos-main(1)\estructura-de-datos-y-algoritmos-main\1p-grupo36-recuperatorio\abb.h
+	"padron.h"
+
+1790949779 c:\users\belu\downloads\estructura-de-datos-y-algoritmos-main(1)\estructura-de-datos-y-algoritmos-main\1p-grupo36-recuperatorio\lsobb.h
+	"padron.h"
+
