@@ -1,0 +1,25 @@
+# depslib dependency file v1.0
+1792417386 source:c:\users\agusg\documents\universida\uni\a—o 2\eda\p2-grupo36\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<malloc.h>
+	<conio.h>
+	"Padron.h"
+	"RAL.h"
+	"RAC.h"
+	"RS.h"
+
+1792418102 c:\users\agusg\documents\universida\uni\a—o 2\eda\p2-grupo36\ral.h
+	"padron.h"
+
+1792267920 c:\users\agusg\documents\universida\uni\a—o 2\eda\p2-grupo36\padron.h
+	<string.h>
+
+1792419063 c:\users\agusg\documents\universida\uni\a—o 2\eda\p2-grupo36\rac.h
+	"padron.h"
+
+1792418908 c:\users\agusg\documents\universida\uni\a—o 2\eda\p2-grupo36\rs.h
+	<malloc.h>
+	"padron.h"
+
